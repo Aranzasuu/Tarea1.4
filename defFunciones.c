@@ -70,38 +70,33 @@ void imprimirCancion(Cancion* a){
 void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
 {
     int op, op2;
-    printf("Ingresar 0 para comenzar\n");
-    scanf("%d", &op);
-
-
-    while(op != 8)
-    {
-        printf("\nopcion 0. Importar\n");
-        printf("opcion 1. Agregar Cancion\n");
-        printf("opcion 2. Buscar Cancion\n");
-        printf("opcion 3. Eliminar Cancion\n");
-        printf("opcion 4. Mostrar Nombres Listas\n");
-        printf("opcion 5. Mostrar Lista\n");
-        printf("opcion 6. Mostrar todas las Canciones\n");
-        printf("opcion 7. Exportar\n");
-        printf("opcion 8. Salir\n");
+    do{
+        printf("\nopcion 1. Importar\n");
+        printf("opcion 2. Agregar Cancion\n");
+        printf("opcion 3. Buscar Cancion\n");
+        printf("opcion 4. Eliminar Cancion\n");
+        printf("opcion 5. Mostrar Nombres Listas\n");
+        printf("opcion 6. Mostrar Lista\n");
+        printf("opcion 7. Mostrar todas las Canciones\n");
+        printf("opcion 8. Exportar\n");
+        printf("opcion 9. Salir\n");
         scanf("%d", &op);
 
-        while(op < 0 || op > 8)
+        while(op < 1 || op > 9)
         {
             printf("ingrese una opcion valida\n");
             scanf("%d", &op);
         }
-        
+
         switch(op)
         {
-            case 0:
+            case 1:
                 importar(archivo, biblioteca);
                 break;
-            case 1:
+            case 2:
                 AgregarCancion(biblioteca);
                 break; 
-            case 2:
+            case 3:
                 printf("opcion 1. Nombre\n");
                 printf("opcion 2. Artista\n");
                 printf("opcion 3. Genero\n");
@@ -119,28 +114,29 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
                         break;
                 }
                 break;
-            case 3:
+            case 4:
                 EliminarCancion(biblioteca);
                 break;
-            case 4:
-                MostrarNombresListas(biblioteca);
-                break;
             case 5:
-                mostrarReproduccion(biblioteca);
+                mostrarLista(biblioteca);
                 break;
             case 6:
-                mostrarCanciones(biblioteca -> ListaCanciones);
+                mostrarReproduccion(biblioteca);
                 break;
             case 7:
-                printf("Aun no se programa\n");
+                mostrarCanciones(biblioteca -> ListaCanciones);
                 break;
             case 8:
+                printf("Aun no se programa\n");
+                break;
+            case 9:
                 break;
             printf("\n\n");
         }
-    }
-    printf("\n\n");
+
+    } while(op > 0 && op < 9);
 }
+
 
 void importar(FILE *archivo, Biblioteca* biblioteca)
 {
@@ -459,14 +455,23 @@ void BuscarPorGenero(List *canciones)
      }*/
 }
 
-void MostrarNombresListas(Biblioteca *biblioteca){
-    Reproduccion* repro = firstList(biblioteca -> ListaGeneral);
+void mostrarLista(Biblioteca *biblioteca)
+{
+    Reproduccion *listas = firstList(biblioteca -> ListaGeneral);
     printf("Informacion listas de reproduccion =\n");
-    while(repro != NULL)
-    {
-        printf("Nombre Lista: %s\n", repro -> NombreList);
-        printf("Cantidad Canciones: %d\n", repro -> cantidadCanciones);
+    while(listas != NULL){
+        printf("Nombre de la Lista : %s\n", listas -> NombreList);
+        printf("Cantidad de canciones = %d\n", listas -> cantidadCanciones);
         printf("-------------------------------\n");
-        repro = nextList(biblioteca -> ListaGeneral);
+        listas = nextList(biblioteca -> ListaGeneral);
     }
 }
+
+/*
+void exportarCanciones(List *listaCancion){
+    char *nuevoArchivo;
+    FILE *archivo = fopen(nuevoArchivo, "w+");
+    
+    Cancion *nuevo = firstList(listaCancion);
+    while(archivo != NULL)
+}*/
