@@ -93,8 +93,8 @@ void pushCurrent(List * list, void * data) {
 
     if(list->current->next){
         list->current->next->prev = new;
-        
     }
+    
     list->current->next = new;
 
     if(list->current==list->tail){
@@ -123,10 +123,8 @@ void * popCurrent(List * list) {
     if (aux->next != NULL) 
         aux->next->prev = aux->prev;
     
-    
     if (aux->prev != NULL) 
         aux->prev->next = aux->next;
-    
     
     void * data = (void *)aux->data;
     
@@ -138,9 +136,6 @@ void * popCurrent(List * list) {
         
     list->current = aux->prev;
 
-
-
-    
     free(aux);
     
     return data;

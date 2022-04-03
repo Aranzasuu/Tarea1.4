@@ -25,7 +25,7 @@ typedef struct{          // Es la estructura que guarda cada lista creada.
 void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo);
 void importar(FILE *archivo, Biblioteca* biblioteca);
 void mostrarCanciones(List* listaCanciones);
-void mostrarReproduccion(Biblioteca* biblioteca, char* nombreLista);
+void mostrarReproduccion(Biblioteca* biblioteca);
 Reproduccion* existeReproduccion(Biblioteca* biblioteca, char* nombreList);
 Biblioteca *crearBiblioteca();
 void imprimirCancion(Cancion * lista);
@@ -38,6 +38,6 @@ void guardarGenero(Biblioteca *listGeneral, const char *atributo);
 void guardarLista(Biblioteca *listGeneral, const char *atributo);
 //Reproduccion *buscarListDeRepro(Cancion *auxCanciones);
 void obtenerGeneros(List * genero, const char *dato);
-// const char *get_csv_field (char * tmp, int k)
+const char *get_csv_field (char * tmp, int k);
 
 #endif

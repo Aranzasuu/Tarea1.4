@@ -89,7 +89,7 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
 
         while(op < 0 || op > 8)
         {
-            printf("ingrese una opcion valido\n");
+            printf("ingrese una opcion valida\n");
             scanf("%d", &op);
         }
         
@@ -109,11 +109,6 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
                 switch(op2)
                 {
                     case 1:
-                        /*printf("Ingrese el nombre: ");
-                        char cancionBuscada[35];
-                        scanf("%s",cancionBuscada);
-                        printf("cancion b = %s",cancionBuscada);
-                        //cancionBuscada = "Hey ya!";*/ 
                         BuscarPorNombre(biblioteca -> ListaCanciones);
                         break;
                     case 2:
@@ -131,10 +126,10 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
                 printf("Funcion en proceso\n");
                 break;
             case 5:
-                mostrarReproduccion(biblioteca, "Lista1");
+                mostrarReproduccion(biblioteca);
                 break;
             case 6:
-                printf("Funcion en proceso\n");
+                mostrarCanciones(biblioteca -> ListaCanciones);
                 break;
             case 7:
                 printf("Funcion en proceso\n");
@@ -150,7 +145,6 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
 void importar(FILE *archivo, Biblioteca* biblioteca)
 {
     int i;
-    //int k = 0;
     char linea[1024];
 
     while (fgets(linea, 1024, archivo) != NULL)
@@ -187,7 +181,7 @@ void importar(FILE *archivo, Biblioteca* biblioteca)
             }
         }
 
-        pushBack(biblioteca->ListaCanciones, cancion); // pushBack
+        pushBack(biblioteca->ListaCanciones, cancion);
 
         Reproduccion* reproAux = existeReproduccion(biblioteca, cancion->NombreLista);
         if (reproAux != NULL)
@@ -208,15 +202,10 @@ void importar(FILE *archivo, Biblioteca* biblioteca)
 
             pushFront(biblioteca->ListaGeneral, repro);
         }
-
-        //listaGlobal->cantidadCanciones += 1;
-        //if (k < 5) imprimirCancion(cancion);
-        //k++;
     }
     
     fclose(archivo);
     printf("Archivo importado!\n\n");
-    //return listGeneral;
 }
 
 Reproduccion* existeReproduccion(Biblioteca* biblioteca, char* nombreList)
@@ -229,19 +218,22 @@ Reproduccion* existeReproduccion(Biblioteca* biblioteca, char* nombreList)
             //printf("* %s\n", repro->NombreList);
             break;
         }
-
         repro = nextList(biblioteca->ListaGeneral);
     }
-
     return repro;
 }
 
-void mostrarReproduccion(Biblioteca* biblioteca, char* nombreLista)
+void mostrarReproduccion(Biblioteca* biblioteca)
 {
+    char nombreLista[100];
+    printf("Ingrese el nombre de la lista: ");
+    getchar();
+    scanf("%[^\n]s",nombreLista);
+    printf("\n");
     Reproduccion* repro = existeReproduccion(biblioteca, nombreLista);
-
+    
     if (repro == NULL)
-        printf("NULL\n");
+        printf("La lista no existe\n");
 
     if (repro != NULL)
     {
@@ -251,40 +243,21 @@ void mostrarReproduccion(Biblioteca* biblioteca, char* nombreLista)
         while (cancion != NULL)
         {
             imprimirCancion(cancion);
-
-            //if (strcmp(cancion->Artista, nombreABuscar) == 0)
-            //    return cancion;
-
             cancion = (Cancion*)nextList(repro->ListaReprod);
         }
-
-        //mostrarCanciones(repro->ListaReprod);
     }
 }
 
 void mostrarCanciones(List* listaCanciones)
 {
-    //char* nombreABuscar;
-
     Cancion* cancion = (Cancion*)firstList(listaCanciones);
     while (cancion != NULL)
     {
         imprimirCancion(cancion);
-
-        //if (strcmp(cancion->Artista, nombreABuscar) == 0)
-        //    return cancion;
-
         cancion = (Cancion*)nextList(listaCanciones);
     }
-
-    //return NULL;
 }
-
-/*void obtenerGeneros(List * genero, const char *dato){
-    printf("Aun no se crea esta funcion");
-}
-
-
+/*
 void LlenarLista(Biblioteca *listGeneral, char *linea)
 
 {
@@ -302,10 +275,8 @@ void LlenarLista(Biblioteca *listGeneral, char *linea)
     //     else
     //         guardarLista(listGeneral,atributo);
     // }
-}
-
-
-
+}*/
+/*
 void guardarLista(Biblioteca *lista, const char *atr)
 {
     printf("Aun no se crea esta funcion");
@@ -313,23 +284,17 @@ void guardarLista(Biblioteca *lista, const char *atr)
 */
 
 void BuscarPorNombre(List *ListaCanciones){
-    char cancionBuscada[35];
     printf("Ingrese el nombre de la cancion: ");
+    char cancionBuscada[100];
+    getchar();
     scanf("%[^\n]s",cancionBuscada);
-    printf("cancion buscada: %s\n",cancionBuscada);
-    //cancionBuscada = "Numb";
-    //cancionBuscada[strcspn(cancionBuscada, "\n")] = 0;
     Cancion *canciones = (Cancion *) firstList(ListaCanciones);
     int flag = 0;
     
     while(canciones != NULL){    
         if(strcmp(canciones -> Nombre, cancionBuscada) == 0)
         {
-            printf("\nNombre: %s\n", canciones -> Nombre);
-            printf("Artista: %s\n", canciones -> Artista);
-            printf("Genero: %s\n", canciones -> Genero);
-            printf("Año: %s\n", canciones -> year);
-            printf("Lista de: %s\n", canciones -> NombreLista);
+            imprimirCancion(canciones);
             flag = 1;            
             break;
         }
@@ -341,10 +306,10 @@ void BuscarPorNombre(List *ListaCanciones){
 }
 
 void eliminarCancion(Biblioteca *biblioteca){
-    char *cancionEliminada;
-    //scanf("%[^\n]s", cancionEliminada);
-    //printf("%s",cancionEliminada);
-    cancionEliminada = "Welcome to the jungle";
+    printf("Ingrese el nombre de la cancion: ");
+    char cancionEliminada[100];
+    getchar();
+    scanf("%[^\n]s",cancionEliminada);
     Cancion *eliminar = firstList(biblioteca -> ListaCanciones);
     int flag = 0;
     while(eliminar != NULL){
@@ -361,19 +326,22 @@ void eliminarCancion(Biblioteca *biblioteca){
 }
 
 void Buscar_artista(List *ListaCanciones){
-    char *art_buscado = (char *) malloc (35 * sizeof(char)); 
-    int k = 0;
-    scanf("%s", art_buscado);
+    printf("Ingrese el nombre del artista: ");
+    char art_buscado[100];
+    getchar();
+    scanf("%[^\n]s",art_buscado);
+    int flag = 0;
 
     Cancion *canciones = firstList(ListaCanciones);
 
     while(canciones != NULL ){
         if (strcmp(canciones -> Artista, art_buscado) == 0){
             imprimirCancion(canciones);
-            k = 1;
+            flag = 1;
         }
         canciones = nextList(ListaCanciones);
     }
-
-    if (k == 0) printf("No se encontro ninguna cancion de %s.\n" , art_buscado);
+    if (flag == 0) printf("No se encontro ninguna cancion de %s.\n" , art_buscado);
 }
+
+void AgregarCancion()

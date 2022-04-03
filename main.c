@@ -13,7 +13,7 @@ int main()
     printf("Ingrese el nombre del archivo: ");
     scanf("%s", NombreArchivo);
     FILE *archivo = fopen(NombreArchivo,"r");
-    
+
     while(archivo == NULL)
     {
         printf("No se pudo abrir el archivo, ingrese un nombre valido\n");
@@ -30,7 +30,7 @@ int main()
     // lista_global -> ListaReprod = createList();
     // strcpy(lista_global -> NombreList , "Lista Global");
 
-    int a = 1;
+    //int a = 1;
 
     ImprimirMenu(biblioteca, archivo);
     
