@@ -99,7 +99,7 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
                 importar(archivo, biblioteca);
                 break;
             case 1:
-                printf("Función en proceso\n");
+                AgregarCancion(biblioteca);
                 break; 
             case 2:
                 printf("opcion 1. Nombre\n");
@@ -115,15 +115,15 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
                         Buscar_artista(biblioteca -> ListaCanciones);
                         break;
                     case 3:
-                        printf("Ingrese el genero: ");
+                        BuscarPorGenero(biblioteca -> ListaCanciones);
                         break;
                 }
                 break;
             case 3:
-                eliminarCancion(biblioteca);
+                EliminarCancion(biblioteca);
                 break;
             case 4:
-                printf("Funcion en proceso\n");
+                MostrarNombresListas(biblioteca);
                 break;
             case 5:
                 mostrarReproduccion(biblioteca);
@@ -132,7 +132,7 @@ void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo)
                 mostrarCanciones(biblioteca -> ListaCanciones);
                 break;
             case 7:
-                printf("Funcion en proceso\n");
+                printf("Aun no se programa\n");
                 break;
             case 8:
                 break;
@@ -171,6 +171,17 @@ void importar(FILE *archivo, Biblioteca* biblioteca)
                     break;
                 case 2:
                     strcpy(cancion->Genero, aux);
+                    /*printf("aux = %s\n",aux);
+                    cancion -> ListaGenero = createList();
+                    const char delimitador[2] = ", ";
+                    char *token = strtok(cancion -> Genero, delimitador);
+                    if(token != NULL)
+                    {
+                        while(token != NULL){
+                            token = strtok(NULL, delimitador);
+                            pushBack(cancion -> ListaGenero, token);
+                        }
+                    }*/
                     break;
                 case 3:
                     strcpy(cancion->year, aux);
@@ -206,6 +217,56 @@ void importar(FILE *archivo, Biblioteca* biblioteca)
     
     fclose(archivo);
     printf("Archivo importado!\n\n");
+}
+
+void AgregarCancion(Biblioteca *biblioteca)
+{
+    Cancion *c_ingresada = crearCancion();
+
+    // ingreso
+    printf("Introduzca el nombre de la cancion: \n");
+    getchar();
+    scanf("%[^\n]s", c_ingresada->Nombre);
+    if (cancionExiste(c_ingresada->Nombre, biblioteca->ListaCanciones) == 0)
+    {
+
+        printf("Introduzca el artista o banda : \n");
+        getchar();
+        scanf("%[^\n]s", c_ingresada->Artista);
+
+        printf("Introduzca el/los genero/s : \n");
+        getchar();
+        scanf("%[^\n]s", c_ingresada->Genero);
+
+        printf("Introduzca el año de creacion : \n");
+        getchar();
+        scanf("%[^\n]s", c_ingresada->year);
+
+        printf("¿A que lista le gustaria agregar esta cancion?\n");
+        getchar();
+        scanf("%[^\n]s", c_ingresada->NombreLista);
+
+        // ingreso a lista de canciones
+        pushFront(biblioteca->ListaCanciones, c_ingresada);
+        // ingreso a su respectiva lista
+        Reproduccion *listaAux = existeReproduccion(biblioteca, c_ingresada->NombreLista);
+        if (listaAux != NULL)
+        { // si existe la lista
+            listaAux->cantidadCanciones += 1;
+            pushFront(listaAux->ListaReprod, c_ingresada);
+        }
+        else
+        {
+            Reproduccion *lista = (Reproduccion *)malloc(sizeof(Reproduccion));
+            lista->cantidadCanciones = 1;
+            lista->ListaReprod = createList();
+            lista->NombreList = (char *)malloc(sizeof(char) * 35);
+            strcpy(lista->NombreList, c_ingresada->NombreLista);
+            pushFront(lista->ListaReprod, c_ingresada);
+        }
+    }
+    else
+        printf("Ya existe una cancion con ese nombre\n");
 }
 
 Reproduccion* existeReproduccion(Biblioteca* biblioteca, char* nombreList)
@@ -257,31 +318,6 @@ void mostrarCanciones(List* listaCanciones)
         cancion = (Cancion*)nextList(listaCanciones);
     }
 }
-/*
-void LlenarLista(Biblioteca *listGeneral, char *linea)
-
-{
-    // for(int i = 0; i < 5; i++)
-    // {
-    //     const char *atributo = get_csv_field(linea, i);
-    //     if(i == 0)
-    //         strcpy(listGeneral -> cancion -> Nombre, atributo);
-    //     else if (i == 1)
-    //         strcpy(listGeneral -> cancion -> Artista, atributo);
-    //     else if (i == 2)
-    //         guardarGenero(listGeneral, atributo);
-    //     else if(i == 3)
-    //         listGeneral -> cancion -> year = atributo;
-    //     else
-    //         guardarLista(listGeneral,atributo);
-    // }
-}*/
-/*
-void guardarLista(Biblioteca *lista, const char *atr)
-{
-    printf("Aun no se crea esta funcion");
-}
-*/
 
 void BuscarPorNombre(List *ListaCanciones){
     printf("Ingrese el nombre de la cancion: ");
@@ -305,26 +341,6 @@ void BuscarPorNombre(List *ListaCanciones){
     printf("\n");
 }
 
-void eliminarCancion(Biblioteca *biblioteca){
-    printf("Ingrese el nombre de la cancion: ");
-    char cancionEliminada[100];
-    getchar();
-    scanf("%[^\n]s",cancionEliminada);
-    Cancion *eliminar = firstList(biblioteca -> ListaCanciones);
-    int flag = 0;
-    while(eliminar != NULL){
-        if(strcmp(eliminar -> Nombre, cancionEliminada) == 0){
-            popCurrent(biblioteca -> ListaCanciones);
-            flag = 1;
-            break;
-        }
-        eliminar = nextList(biblioteca -> ListaCanciones);
-    }
-    if (flag == 0){
-        printf("No esta la cancion que desea eliminar\n");
-    }
-}
-
 void Buscar_artista(List *ListaCanciones){
     printf("Ingrese el nombre del artista: ");
     char art_buscado[100];
@@ -344,4 +360,113 @@ void Buscar_artista(List *ListaCanciones){
     if (flag == 0) printf("No se encontro ninguna cancion de %s.\n" , art_buscado);
 }
 
-void AgregarCancion()
+Cancion *crearCancion()
+{
+    Cancion *cancion = (Cancion *)malloc(sizeof(Cancion));
+    cancion->Artista = (char *)malloc(sizeof(char) * 35);
+    cancion->Genero = (char *)malloc(sizeof(char) * 35);
+    cancion->Nombre = (char *)malloc(sizeof(char) * 35);
+    cancion->year = (char *)malloc(sizeof(char) * 4);
+    cancion->NombreLista = (char *)malloc(sizeof(char) * 35);
+    return cancion;
+}
+
+int cancionExiste(char *c_buscada, List *listaCanciones){
+
+    Cancion *aux = crearCancion();
+    aux = firstList(listaCanciones);
+    while (aux != 0)
+    {
+        if (strcmp(aux->Nombre, c_buscada) == 0)
+            return 1;
+        aux = nextList(listaCanciones);
+    }
+    return 0;
+}
+
+void EliminarCancion(Biblioteca *biblioteca)
+{
+    printf("Introduzca el nombre de la cancion que desea eliminar\n");
+     char *c_eliminada = (char *)malloc(sizeof(char) * 35);
+    getchar();
+    scanf("%[^\n]s", c_eliminada);
+    if (cancionExiste(c_eliminada, biblioteca->ListaCanciones))
+    {
+        // eliminar de lista de global y obtener nombre lista
+
+        Cancion *aux1 = crearCancion();
+        Cancion *aux2 = crearCancion();
+
+        aux1 = firstList(biblioteca->ListaCanciones);
+        while (aux1 != NULL)
+        {
+            if (strcmp(aux1->Nombre, c_eliminada) == 0)
+            {
+                popCurrent(biblioteca->ListaCanciones);
+                break;
+            }
+            aux1 = nextList(biblioteca->ListaCanciones);
+        }
+        // eliminar de su lista especifica
+        Reproduccion *reproAux = existeReproduccion(biblioteca, aux1->NombreLista);
+        if (reproAux != NULL)
+        {
+            aux2 = firstList(reproAux->ListaReprod);
+            while (aux2 != NULL)
+            {
+                if (strcmp(aux2->Nombre, c_eliminada) == 0)
+                {
+                    reproAux->cantidadCanciones -= 1;
+                    popCurrent(reproAux->ListaReprod);
+                    break;
+                }
+                aux2 = nextList(reproAux->ListaReprod);
+            }
+        }
+        else
+            printf("lista de reproduccion NO existe");
+    }
+    else
+        printf("Cancion que quiere eliminar no existe");
+}
+
+void BuscarPorGenero(List *canciones)
+{
+    printf("Ingrese el genero: ");
+    char *generoBuscado = (char *)malloc(sizeof(char) * 35);
+    scanf("%s", generoBuscado);
+    Cancion *cancion = firstList(canciones);
+
+    while (cancion != NULL)
+    {
+        if (strstr(cancion->Genero, generoBuscado) != NULL)
+        {
+            imprimirCancion(cancion);
+        }
+        cancion = nextList(canciones);
+    }
+    // printf("El genero buscado no se encuentra");
+    /*
+     while(strcmp(cancion->Genero, generoBuscado)==0){
+         printf("Nombre: %s", cancion->nombre);
+         printf("Artista: %s", cancion->artista);
+         printf("Genero: %s", cancion->genero);
+         printf("Año: %s", cancion->year);
+         printf("Lista de: %s", cancion->listaDeListas);
+     }
+     if(cancion->Genero=NULL){
+         break;
+     }*/
+}
+
+void MostrarNombresListas(Biblioteca *biblioteca){
+    Reproduccion* repro = firstList(biblioteca -> ListaGeneral);
+    printf("Informacion listas de reproduccion =\n");
+    while(repro != NULL)
+    {
+        printf("Nombre Lista: %s\n", repro -> NombreList);
+        printf("Cantidad Canciones: %d\n", repro -> cantidadCanciones);
+        printf("-------------------------------\n");
+        repro = nextList(biblioteca -> ListaGeneral);
+    }
+}

@@ -28,16 +28,19 @@ void mostrarCanciones(List* listaCanciones);
 void mostrarReproduccion(Biblioteca* biblioteca);
 Reproduccion* existeReproduccion(Biblioteca* biblioteca, char* nombreList);
 Biblioteca *crearBiblioteca();
+void AgregarCancion(Biblioteca *biblioteca);
 void imprimirCancion(Cancion * lista);
 void BuscarPorNombre(List *ListaCanciones);
-void eliminarCancion(Biblioteca *biblioteca);
 void Buscar_artista(List* ListaCanciones);
-
+void BuscarPorGenero(List *canciones);
+void EliminarCancion(Biblioteca *biblioteca);
+int cancionExiste(char *c_buscada, List *listaCanciones);
+Cancion *crearCancion();
 void LlenarLista(Biblioteca *listGeneral, char *linea);
 void guardarGenero(Biblioteca *listGeneral, const char *atributo);
 void guardarLista(Biblioteca *listGeneral, const char *atributo);
-//Reproduccion *buscarListDeRepro(Cancion *auxCanciones);
 void obtenerGeneros(List * genero, const char *dato);
+void MostrarNombresListas(Biblioteca *biblioteca);
 const char *get_csv_field (char * tmp, int k);
 
 #endif
