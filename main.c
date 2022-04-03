@@ -8,16 +8,20 @@
 //typedef List List;
 
 int main()
-{
-    int opcion;
-    int opcion2;
-    //ImprimirMenu(opcion, opcion2);
+{   
+    char *NombreArchivo;
+    printf("Ingrese el nombre del archivo: ");
+    scanf("%s", NombreArchivo);
+    FILE *archivo = fopen(NombreArchivo,"r");
     
-    FILE *archivo = fopen("Canciones.csv","r");
-    if(archivo == NULL)
+    while(archivo == NULL)
     {
-        printf("No se pudo abrir el archivo");
-        return(EXIT_FAILURE);
+        printf("No se pudo abrir el archivo, ingrese un nombre valido\n");
+        printf("Ingrese el nombre del archivo: ");
+        scanf("%s", NombreArchivo);
+        FILE *archivo = fopen(NombreArchivo,"r");
+        if (archivo != NULL) break;
+        //return(EXIT_FAILURE);
     }
 
     Biblioteca *biblioteca = crearBiblioteca();   // no recibe parámetros, porque retorna una lista, con la información ya dimensionada.
@@ -28,13 +32,17 @@ int main()
 
     int a = 1;
 
-    while (a == 1)
+    ImprimirMenu(biblioteca, archivo);
+    
+    /*while (a == 1)
     {
         importar(archivo, biblioteca);
         a = 0;
         //mostrarCanciones(biblioteca->ListaCanciones);
-        mostrarReproduccion(biblioteca, "Lista 1");
-    }
+        //mostrarReproduccion(biblioteca, "Lista 1");
+        //BuscarPorNombre(biblioteca -> ListaCanciones);
+
+    }*/
 
     return 0;
 }

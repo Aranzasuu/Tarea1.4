@@ -22,13 +22,16 @@ typedef struct{          // Es la estructura que guarda cada lista creada.
     List *ListaCanciones; // Cada posición contiene la información de una lista
 }   Biblioteca;
 
-void ImprimirMenu(int op, int op2);
+void ImprimirMenu(Biblioteca *biblioteca, FILE *archivo);
 void importar(FILE *archivo, Biblioteca* biblioteca);
 void mostrarCanciones(List* listaCanciones);
 void mostrarReproduccion(Biblioteca* biblioteca, char* nombreLista);
 Reproduccion* existeReproduccion(Biblioteca* biblioteca, char* nombreList);
 Biblioteca *crearBiblioteca();
 void imprimirCancion(Cancion * lista);
+void BuscarPorNombre(List *ListaCanciones);
+void eliminarCancion(Biblioteca *biblioteca);
+void Buscar_artista(List* ListaCanciones);
 
 void LlenarLista(Biblioteca *listGeneral, char *linea);
 void guardarGenero(Biblioteca *listGeneral, const char *atributo);
