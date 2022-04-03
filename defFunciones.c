@@ -167,17 +167,6 @@ void importar(FILE *archivo, Biblioteca* biblioteca)
                     break;
                 case 2:
                     strcpy(cancion->Genero, aux);
-                    /*printf("aux = %s\n",aux);
-                    cancion -> ListaGenero = createList();
-                    const char delimitador[2] = ", ";
-                    char *token = strtok(cancion -> Genero, delimitador);
-                    if(token != NULL)
-                    {
-                        while(token != NULL){
-                            token = strtok(NULL, delimitador);
-                            pushBack(cancion -> ListaGenero, token);
-                        }
-                    }*/
                     break;
                 case 3:
                     strcpy(cancion->year, aux);
@@ -192,9 +181,7 @@ void importar(FILE *archivo, Biblioteca* biblioteca)
 
         Reproduccion* reproAux = existeReproduccion(biblioteca, cancion->NombreLista);
         if (reproAux != NULL)
-        {
-            //printf("Existe: %s", reproAux->NombreList);
-            
+        {           
             reproAux->cantidadCanciones += 1;
             pushFront(reproAux->ListaReprod, cancion);
         }
@@ -441,18 +428,6 @@ void BuscarPorGenero(List *canciones)
         }
         cancion = nextList(canciones);
     }
-    // printf("El genero buscado no se encuentra");
-    /*
-     while(strcmp(cancion->Genero, generoBuscado)==0){
-         printf("Nombre: %s", cancion->nombre);
-         printf("Artista: %s", cancion->artista);
-         printf("Genero: %s", cancion->genero);
-         printf("Año: %s", cancion->year);
-         printf("Lista de: %s", cancion->listaDeListas);
-     }
-     if(cancion->Genero=NULL){
-         break;
-     }*/
 }
 
 void mostrarLista(Biblioteca *biblioteca)
@@ -466,12 +441,3 @@ void mostrarLista(Biblioteca *biblioteca)
         listas = nextList(biblioteca -> ListaGeneral);
     }
 }
-
-/*
-void exportarCanciones(List *listaCancion){
-    char *nuevoArchivo;
-    FILE *archivo = fopen(nuevoArchivo, "w+");
-    
-    Cancion *nuevo = firstList(listaCancion);
-    while(archivo != NULL)
-}*/
